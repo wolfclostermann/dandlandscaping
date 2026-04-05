@@ -1356,9 +1356,10 @@
   });
 
   // Gallery drag-to-scroll (desktop mouse)
-  let isDragging = false, dragStartX = 0, dragScrollLeft = 0, scrollLeftOnDown = 0;
+  let isDragging = false, wasDrag = false, dragStartX = 0, dragScrollLeft = 0, scrollLeftOnDown = 0;
   galleryGrid.addEventListener('mousedown', e => {
     isDragging = true;
+    wasDrag = false;
     dragStartX = e.pageX - galleryGrid.offsetLeft;
     dragScrollLeft = galleryGrid.scrollLeft;
     scrollLeftOnDown = galleryGrid.scrollLeft;
@@ -1367,8 +1368,11 @@
   window.addEventListener('mouseup', () => { isDragging = false; galleryGrid.classList.remove('dragging'); });
   galleryGrid.addEventListener('mousemove', e => {
     if (!isDragging) return;
+    const delta = e.pageX - galleryGrid.offsetLeft - dragStartX;
+    if (Math.abs(delta) < 5) return; // dead zone — ignore micro-movement during a click
+    wasDrag = true;
     e.preventDefault();
-    galleryGrid.scrollLeft = dragScrollLeft - (e.pageX - galleryGrid.offsetLeft - dragStartX);
+    galleryGrid.scrollLeft = dragScrollLeft - delta;
   });
 
   // Intercept horizontal wheel events so Firefox doesn't treat them as back/forward
@@ -1379,12 +1383,18 @@
     }
   }, { passive: false });
 
+  // Track scroll position on touch so mobile tap-vs-swipe detection works
+  galleryGrid.addEventListener('touchstart', () => {
+    scrollLeftOnDown = galleryGrid.scrollLeft;
+  }, { passive: true });
+
   // Lightbox
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightboxImg');
   document.querySelectorAll('.gallery-item').forEach(item => {
     item.addEventListener('click', () => {
-      if (Math.abs(galleryGrid.scrollLeft - scrollLeftOnDown) > 4) return; // was a drag
+      if (wasDrag) return; // desktop drag
+      if (Math.abs(galleryGrid.scrollLeft - scrollLeftOnDown) > 4) return; // mobile swipe
       lightboxImg.src = item.querySelector('img').src;
       lightboxImg.alt = item.querySelector('img').alt;
       lightbox.classList.add('open');
