@@ -258,6 +258,53 @@
     background: rgba(245,240,232,0.05);
   }
 
+  /* HERO TICKER */
+  .hero-ticker {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 36%;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+  }
+
+  .hero-ticker-track {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 2rem 2rem 2rem 1rem;
+    animation: tickerScroll 22s linear infinite;
+  }
+
+  .hero-ticker-track:hover { animation-play-state: paused; }
+
+  @keyframes tickerScroll {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+  }
+
+  .ticker-card {
+    background: rgba(255,255,255,0.055);
+    border: 1px solid rgba(122,184,144,0.18);
+    border-radius: 8px;
+    padding: 1.1rem 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .ticker-card-icon { font-size: 1.5rem; flex-shrink: 0; }
+
+  .ticker-card-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--cream);
+    letter-spacing: 0.02em;
+  }
+
   /* SCROLL INDICATOR */
   .scroll-hint {
     position: absolute;
@@ -803,6 +850,7 @@
     }
 
     .hero-content { margin-left: 0; }
+    .hero-ticker { display: none; }
 
     .about-grid,
     .contact-grid {
@@ -877,6 +925,31 @@
     <div class="hero-buttons">
       <a href="#contact" class="btn-primary">Get a Free Quote</a>
       <a href="#services" class="btn-outline">Our Services</a>
+    </div>
+  </div>
+  <div class="hero-ticker" aria-hidden="true">
+    <div class="hero-ticker-track">
+      <div class="ticker-card"><span class="ticker-card-icon">✂️</span><span class="ticker-card-name">Lawn Mowing</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🌳</span><span class="ticker-card-name">Hedge Trimming</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🪵</span><span class="ticker-card-name">Fencing</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🧱</span><span class="ticker-card-name">Patio Installation</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🌱</span><span class="ticker-card-name">Turfing</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🍂</span><span class="ticker-card-name">Garden Clearances</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">💧</span><span class="ticker-card-name">Jet Washing</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🌿</span><span class="ticker-card-name">Weeding</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🏡</span><span class="ticker-card-name">General Tidy-Up</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🪨</span><span class="ticker-card-name">Shingling</span></div>
+      <!-- duplicate set for seamless loop -->
+      <div class="ticker-card"><span class="ticker-card-icon">✂️</span><span class="ticker-card-name">Lawn Mowing</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🌳</span><span class="ticker-card-name">Hedge Trimming</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🪵</span><span class="ticker-card-name">Fencing</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🧱</span><span class="ticker-card-name">Patio Installation</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🌱</span><span class="ticker-card-name">Turfing</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🍂</span><span class="ticker-card-name">Garden Clearances</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">💧</span><span class="ticker-card-name">Jet Washing</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🌿</span><span class="ticker-card-name">Weeding</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🏡</span><span class="ticker-card-name">General Tidy-Up</span></div>
+      <div class="ticker-card"><span class="ticker-card-icon">🪨</span><span class="ticker-card-name">Shingling</span></div>
     </div>
   </div>
   <div class="scroll-hint">Scroll</div>
