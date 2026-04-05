@@ -1356,14 +1356,12 @@
   });
 
   // Gallery drag-to-scroll (desktop mouse)
-  let isDragging = false, dragStartX = 0, dragScrollLeft = 0;
-  let clickOriginX = 0, clickOriginY = 0;
+  let isDragging = false, dragStartX = 0, dragScrollLeft = 0, scrollLeftOnDown = 0;
   galleryGrid.addEventListener('mousedown', e => {
     isDragging = true;
     dragStartX = e.pageX - galleryGrid.offsetLeft;
     dragScrollLeft = galleryGrid.scrollLeft;
-    clickOriginX = e.clientX;
-    clickOriginY = e.clientY;
+    scrollLeftOnDown = galleryGrid.scrollLeft;
     galleryGrid.classList.add('dragging');
   });
   window.addEventListener('mouseup', () => { isDragging = false; galleryGrid.classList.remove('dragging'); });
@@ -1375,7 +1373,7 @@
 
   // Intercept horizontal wheel events so Firefox doesn't treat them as back/forward
   galleryGrid.addEventListener('wheel', e => {
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+    if (Math.abs(e.deltaX) > 3) {
       e.preventDefault();
       galleryGrid.scrollLeft += e.deltaX;
     }
@@ -1385,10 +1383,8 @@
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightboxImg');
   document.querySelectorAll('.gallery-item').forEach(item => {
-    item.addEventListener('click', e => {
-      const dx = e.clientX - clickOriginX;
-      const dy = e.clientY - clickOriginY;
-      if (Math.sqrt(dx * dx + dy * dy) > 8) return; // drag, not a click
+    item.addEventListener('click', () => {
+      if (Math.abs(galleryGrid.scrollLeft - scrollLeftOnDown) > 4) return; // was a drag
       lightboxImg.src = item.querySelector('img').src;
       lightboxImg.alt = item.querySelector('img').alt;
       lightbox.classList.add('open');
