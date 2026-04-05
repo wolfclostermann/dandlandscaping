@@ -480,79 +480,108 @@
   }
 
   /* GALLERY */
-  #gallery {
-    background: var(--green-deep);
-  }
-
+  #gallery { background: var(--green-deep); }
   #gallery .section-title { color: var(--cream); }
   #gallery .section-label { color: var(--green-light); }
   #gallery .section-lead { color: rgba(245,240,232,0.6); }
 
+  .gallery-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .gallery-filter-btn {
+    padding: 0.4rem 1.1rem;
+    border: 1px solid rgba(122,184,144,0.35);
+    background: transparent;
+    color: rgba(245,240,232,0.65);
+    border-radius: 100px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    transition: all 0.2s;
+  }
+
+  .gallery-filter-btn:hover,
+  .gallery-filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--green-deep);
+    font-weight: 500;
+  }
+
   .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 220px);
-    gap: 8px;
-    margin-top: 3rem;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 6px;
+    margin-top: 1.5rem;
   }
 
   .gallery-item {
+    aspect-ratio: 4/3;
     background: var(--green-mid);
     border-radius: 3px;
     overflow: hidden;
     position: relative;
     cursor: pointer;
-    transition: transform 0.3s ease;
   }
 
-  .gallery-item:first-child {
-    grid-column: 1 / 2;
-    grid-row: 1 / 3;
-  }
-
-  .gallery-item:hover { transform: scale(1.01); }
-
-  .gallery-placeholder {
+  .gallery-item img {
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 0.5rem;
-    background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
-    color: rgba(122,184,144,0.5);
-    font-size: 2rem;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
   }
 
-  .gallery-placeholder span {
-    font-size: 0.7rem;
-    color: rgba(122,184,144,0.4);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-family: 'DM Sans', sans-serif;
-  }
+  .gallery-item:hover img { transform: scale(1.06); }
 
   .gallery-label {
     position: absolute;
     bottom: 0; left: 0; right: 0;
-    padding: 0.8rem 1rem;
+    padding: 0.7rem 0.9rem;
     background: linear-gradient(to top, rgba(15,36,25,0.9), transparent);
     color: var(--cream);
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 400;
     transform: translateY(100%);
     transition: transform 0.3s ease;
   }
 
   .gallery-item:hover .gallery-label { transform: translateY(0); }
+  .gallery-item.hidden { display: none; }
 
-  .gallery-cta {
-    text-align: center;
-    margin-top: 2.5rem;
-    color: rgba(245,240,232,0.6);
-    font-size: 0.9rem;
+  /* Lightbox */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
   }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 2px;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.5rem;
+    color: rgba(255,255,255,0.75);
+    font-size: 2.5rem;
+    line-height: 1;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+  .lightbox-close:hover { color: white; }
 
   /* CONTACT */
   #contact {
@@ -959,29 +988,146 @@
     <div class="section-label">Before &amp; After</div>
     <h2 class="section-title">See the difference</h2>
     <p class="section-lead">From overgrown and neglected to clean and transformed — here's some of our recent work.</p>
-    <div class="gallery-grid">
-      <div class="gallery-item">
-        <div class="gallery-placeholder">🌿<span>Fencing — Horndean</span></div>
-        <div class="gallery-label">4ft closeboard with concrete gravel boards</div>
-      </div>
-      <div class="gallery-item">
-        <div class="gallery-placeholder">🧱<span>Fencing — Waterlooville</span></div>
-        <div class="gallery-label">Bristol fence with trellis and wooden posts</div>
-      </div>
-      <div class="gallery-item">
-        <div class="gallery-placeholder">🏡<span>Driveway Extension</span></div>
-        <div class="gallery-label">Soil removal, old wall clearance, 20mm shingle</div>
-      </div>
-      <div class="gallery-item">
-        <div class="gallery-placeholder">✂️<span>Garden Clearance</span></div>
-        <div class="gallery-label">Full clearance and tidy-up</div>
-      </div>
-      <div class="gallery-item">
-        <div class="gallery-placeholder">💧<span>Patio Jet Wash</span></div>
-        <div class="gallery-label">Before and after pressure washing</div>
-      </div>
+
+    <div class="gallery-filters">
+      <button class="gallery-filter-btn active" data-filter="all">All</button>
+      <button class="gallery-filter-btn" data-filter="fencing">Fencing</button>
+      <button class="gallery-filter-btn" data-filter="shingle">Shingle</button>
+      <button class="gallery-filter-btn" data-filter="astro">Astro Turf</button>
+      <button class="gallery-filter-btn" data-filter="turf">Turfing</button>
+      <button class="gallery-filter-btn" data-filter="patio">Patio</button>
+      <button class="gallery-filter-btn" data-filter="jetwash">Jet Washing</button>
+      <button class="gallery-filter-btn" data-filter="clearance">Clearance</button>
     </div>
-    <p class="gallery-cta">Add your own photos by replacing the placeholder tiles above.</p>
+
+    <div class="gallery-grid">
+      <!-- FENCING -->
+      <div class="gallery-item" data-cat="fencing"><img src="images/12669424_1576235015930559_6929297635739344238_n.jpg" alt="4ft Closeboard Horndean"><div class="gallery-label">4ft Closeboard &middot; Horndean</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/12743986_1576235022597225_9054937121486081409_n.jpg" alt="4ft Closeboard Horndean"><div class="gallery-label">4ft Closeboard &middot; Horndean</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/12688024_1576235039263890_7699902188057336534_n.jpg" alt="4ft Closeboard Horndean"><div class="gallery-label">4ft Closeboard &middot; Horndean</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/12742299_1576235049263889_1483054865515028620_n.jpg" alt="4ft Closeboard Horndean"><div class="gallery-label">4ft Closeboard &middot; Horndean</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/12733982_1576235069263887_8298670264300711017_n.jpg" alt="4ft Closeboard Horndean"><div class="gallery-label">4ft Closeboard &middot; Horndean</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/51.jpg" alt="4ft Closeboard Horndean"><div class="gallery-label">4ft Closeboard &middot; Horndean</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/52.jpg" alt="4ft Closeboard Horndean"><div class="gallery-label">4ft Closeboard &middot; Horndean</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/IMG_0888-300x225.jpg" alt="Bristol Fence Waterlooville"><div class="gallery-label">Bristol Fence with Trellis &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/IMG_0887-300x225.jpg" alt="Bristol Fence Waterlooville"><div class="gallery-label">Bristol Fence with Trellis &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/IMG_0001.000-225x300.jpg" alt="4ft Closeboard Waterlooville"><div class="gallery-label">4ft Closeboard &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/IMG_0002-225x300.jpg" alt="4ft Closeboard Waterlooville"><div class="gallery-label">4ft Closeboard &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/IMG_0004.001-225x300.jpg" alt="4ft Closeboard Waterlooville"><div class="gallery-label">4ft Closeboard &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/IMG_0014-300x225.jpg" alt="4ft Closeboard Waterlooville"><div class="gallery-label">4ft Closeboard &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/IMG_0069-225x300.jpg" alt="4ft Closeboard Waterlooville"><div class="gallery-label">4ft Closeboard &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/IMG_0071-225x300.jpg" alt="4ft Closeboard Waterlooville"><div class="gallery-label">4ft Closeboard &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/IMG_0072-225x300.jpg" alt="4ft Closeboard Waterlooville"><div class="gallery-label">4ft Closeboard &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/11036455_1474270562793672_1395758999046398902_n.jpg" alt="Closeboard Waterlooville"><div class="gallery-label">Closeboard &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/10359386_1474270532793675_6279988421152357581_n.jpg" alt="Closeboard Waterlooville"><div class="gallery-label">Closeboard &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/IMG_0093-300x225.jpg" alt="Overlap Panels Havant"><div class="gallery-label">Overlap Panels &middot; Havant</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/IMG_1356-300x225.jpg" alt="Overlap Panels Waterlooville"><div class="gallery-label">Overlap Panels &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/37.jpg" alt="Overlap Panels Havant"><div class="gallery-label">Overlap Panels &middot; Havant</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/1798622_1480109695543092_1388531518103880462_n.jpg" alt="Overlap Panels Havant"><div class="gallery-label">Overlap Panels &middot; Havant</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/10929085_1443425919211470_3448325747288275643_n.jpg" alt="Overlap Panels Havant"><div class="gallery-label">Overlap Panels &middot; Havant</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/12400765_1565603263660401_332976826722237955_n.jpg" alt="Overlap Panels Waterlooville"><div class="gallery-label">Overlap Panels &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/12509508_1565603273660400_1310681423501278812_n.jpg" alt="Overlap Panels Waterlooville"><div class="gallery-label">Overlap Panels &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/IMG_1393-300x225.jpg" alt="6ft Closeboard Gate Waterlooville"><div class="gallery-label">6ft Closeboard &amp; Gate &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/IMG_1394-225x300.jpg" alt="6ft Closeboard Gate Waterlooville"><div class="gallery-label">6ft Closeboard &amp; Gate &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="fencing"><img src="images/IMG_1400-225x300.jpg" alt="Gate with Closeboard"><div class="gallery-label">Gate &amp; Closeboard</div></div>
+
+      <!-- SHINGLE -->
+      <div class="gallery-item" data-cat="shingle"><img src="images/12439225_1565602306993830_4401745600375449930_n.jpg" alt="Drive Extension Widley"><div class="gallery-label">Drive Extension &middot; Widley</div></div>
+      <div class="gallery-item" data-cat="shingle"><img src="images/12439047_1565602336993827_7034464410806906015_n.jpg" alt="Drive Extension Widley"><div class="gallery-label">Drive Extension &middot; Widley</div></div>
+      <div class="gallery-item" data-cat="shingle"><img src="images/11008405_1461171200770275_8736075132526073360_n.jpg" alt="Shingled Area Cowplain"><div class="gallery-label">Shingled Area &middot; Cowplain</div></div>
+      <div class="gallery-item" data-cat="shingle"><img src="images/10422143_1461172324103496_1540487873785383406_n.jpg" alt="Shingled Area Cowplain"><div class="gallery-label">Shingled Area &middot; Cowplain</div></div>
+      <div class="gallery-item" data-cat="shingle"><img src="images/14.jpg" alt="Low Maintenance Front Garden Waterlooville"><div class="gallery-label">Low Maintenance Front Garden &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="shingle"><img src="images/13.jpg" alt="Low Maintenance Front Garden Waterlooville"><div class="gallery-label">Low Maintenance Front Garden &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="shingle"><img src="images/12.jpg" alt="Low Maintenance Front Garden Waterlooville"><div class="gallery-label">Low Maintenance Front Garden &middot; Waterlooville</div></div>
+
+      <!-- ASTRO TURF -->
+      <div class="gallery-item" data-cat="astro"><img src="images/11880547_1526641147556613_5576956459021808859_n.jpg" alt="Garden Overhaul Portsmouth"><div class="gallery-label">Garden Overhaul &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/11898671_1526641204223274_5484248539859408149_n.jpg" alt="Garden Overhaul Portsmouth"><div class="gallery-label">Garden Overhaul &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/33.jpg" alt="Concrete to Astro Turf Waterlooville"><div class="gallery-label">Concrete to Astro Turf &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/31.jpg" alt="Concrete to Astro Turf Waterlooville"><div class="gallery-label">Concrete to Astro Turf &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/111.jpg" alt="Concrete to Astro Turf Waterlooville"><div class="gallery-label">Concrete to Astro Turf &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/32.jpg" alt="Concrete to Astro Turf Waterlooville"><div class="gallery-label">Concrete to Astro Turf &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/27.jpg" alt="Concrete to Decking and Astro Portsmouth"><div class="gallery-label">Concrete to Decking &amp; Astro &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/26.jpg" alt="Concrete to Decking and Astro Portsmouth"><div class="gallery-label">Concrete to Decking &amp; Astro &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/25.jpg" alt="Concrete to Decking and Astro Portsmouth"><div class="gallery-label">Concrete to Decking &amp; Astro &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/24.jpg" alt="Concrete to Decking and Astro Portsmouth"><div class="gallery-label">Concrete to Decking &amp; Astro &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/23.jpg" alt="Concrete to Decking and Astro Portsmouth"><div class="gallery-label">Concrete to Decking &amp; Astro &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/11.jpg" alt="Complete Overhaul Portsmouth"><div class="gallery-label">Complete Overhaul &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/10.jpg" alt="Complete Overhaul Portsmouth"><div class="gallery-label">Complete Overhaul &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/9.jpg" alt="Complete Overhaul Portsmouth"><div class="gallery-label">Complete Overhaul &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/8.jpg" alt="Complete Overhaul Portsmouth"><div class="gallery-label">Complete Overhaul &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/6.jpg" alt="Complete Overhaul Portsmouth"><div class="gallery-label">Complete Overhaul &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/5.jpg" alt="Complete Overhaul Portsmouth"><div class="gallery-label">Complete Overhaul &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/11204942_1491609921059736_2762204512514277087_n.jpg" alt="Concrete to Grass Portsmouth"><div class="gallery-label">Concrete to Grass &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/19387_1491609937726401_5232960724439042899_n.jpg" alt="Concrete to Grass Portsmouth"><div class="gallery-label">Concrete to Grass &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/IMG_0892-300x225.jpg" alt="Patchy Lawn Repair"><div class="gallery-label">Patchy Lawn Repair</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/IMG_0893-300x225.jpg" alt="Patchy Lawn Repair"><div class="gallery-label">Patchy Lawn Repair</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/IMG_0894-300x225.jpg" alt="Patchy Lawn Repair"><div class="gallery-label">Patchy Lawn Repair</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/IMG_0897-300x225.jpg" alt="Patchy Lawn Repair"><div class="gallery-label">Patchy Lawn Repair</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/11690_1476948299192565_4355829628342063242_n.jpg" alt="Waterlogged Lawn Waterlooville"><div class="gallery-label">Waterlogged Lawn &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="astro"><img src="images/11088335_1476948342525894_6498742226747738098_n.jpg" alt="Waterlogged Lawn Waterlooville"><div class="gallery-label">Waterlogged Lawn &middot; Waterlooville</div></div>
+
+      <!-- TURFING -->
+      <div class="gallery-item" data-cat="turf"><img src="images/21.jpg" alt="Path and Patio Removal Waterlooville"><div class="gallery-label">Path &amp; Patio Removal &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="turf"><img src="images/22.jpg" alt="Path and Patio Removal Waterlooville"><div class="gallery-label">Path &amp; Patio Removal &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="turf"><img src="images/19.jpg" alt="Path and Patio Removal Waterlooville"><div class="gallery-label">Path &amp; Patio Removal &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="turf"><img src="images/20.jpg" alt="Path and Patio Removal Waterlooville"><div class="gallery-label">Path &amp; Patio Removal &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="turf"><img src="images/17.jpg" alt="Path and Patio Removal Waterlooville"><div class="gallery-label">Path &amp; Patio Removal &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="turf"><img src="images/18.jpg" alt="Path and Patio Removal Waterlooville"><div class="gallery-label">Path &amp; Patio Removal &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="turf"><img src="images/44.jpg" alt="Large Scale Turfing Petersfield"><div class="gallery-label">Large Scale Turfing &middot; Petersfield</div></div>
+      <div class="gallery-item" data-cat="turf"><img src="images/45.jpg" alt="Large Scale Turfing Petersfield"><div class="gallery-label">Large Scale Turfing &middot; Petersfield</div></div>
+      <div class="gallery-item" data-cat="turf"><img src="images/42.jpg" alt="Large Scale Turfing Petersfield"><div class="gallery-label">Large Scale Turfing &middot; Petersfield</div></div>
+      <div class="gallery-item" data-cat="turf"><img src="images/43.jpg" alt="Large Scale Turfing Petersfield"><div class="gallery-label">Large Scale Turfing &middot; Petersfield</div></div>
+      <div class="gallery-item" data-cat="turf"><img src="images/ian-1.jpg" alt="Wasteland to Turf Widley"><div class="gallery-label">Wasteland to Turf &middot; Widley</div></div>
+      <div class="gallery-item" data-cat="turf"><img src="images/49.jpg" alt="Wasteland to Turf Widley"><div class="gallery-label">Wasteland to Turf &middot; Widley</div></div>
+      <div class="gallery-item" data-cat="turf"><img src="images/48.jpg" alt="Wasteland to Turf Widley"><div class="gallery-label">Wasteland to Turf &middot; Widley</div></div>
+      <div class="gallery-item" data-cat="turf"><img src="images/IMG_0812.000-300x300.jpg" alt="Follow-up Turfing Widley"><div class="gallery-label">Follow-up Turfing &middot; Widley</div></div>
+      <div class="gallery-item" data-cat="turf"><img src="images/IMG_0814-300x300.jpg" alt="Follow-up Turfing Widley"><div class="gallery-label">Follow-up Turfing &middot; Widley</div></div>
+
+      <!-- PATIO -->
+      <div class="gallery-item" data-cat="patio"><img src="images/10389415_1514959948724733_6731646859921513142_n.jpg" alt="BBQ Area Extension Cowplain"><div class="gallery-label">BBQ Area Extension &middot; Cowplain</div></div>
+      <div class="gallery-item" data-cat="patio"><img src="images/11703113_1514959938724734_2671815883907986352_n.jpg" alt="BBQ Area Extension Cowplain"><div class="gallery-label">BBQ Area Extension &middot; Cowplain</div></div>
+      <div class="gallery-item" data-cat="patio"><img src="images/36.jpg" alt="Bamboo Removal and Paving Portsmouth"><div class="gallery-label">Bamboo Removal &amp; Paving &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="patio"><img src="images/35.jpg" alt="Bamboo Removal and Paving Portsmouth"><div class="gallery-label">Bamboo Removal &amp; Paving &middot; Portsmouth</div></div>
+      <div class="gallery-item" data-cat="patio"><img src="images/4.jpg" alt="Sloped Garden Levelling Waterlooville"><div class="gallery-label">Sloped Garden Levelling &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="patio"><img src="images/3.jpg" alt="Sloped Garden Levelling Waterlooville"><div class="gallery-label">Sloped Garden Levelling &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="patio"><img src="images/2.jpg" alt="Sloped Garden Levelling Waterlooville"><div class="gallery-label">Sloped Garden Levelling &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="patio"><img src="images/1.jpg" alt="Sloped Garden Levelling Waterlooville"><div class="gallery-label">Sloped Garden Levelling &middot; Waterlooville</div></div>
+
+      <!-- JET WASHING -->
+      <div class="gallery-item" data-cat="jetwash"><img src="images/11401360_1497725457114849_27908791596700979_n.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+      <div class="gallery-item" data-cat="jetwash"><img src="images/11393192_1497725483781513_2407357695479480410_n.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+      <div class="gallery-item" data-cat="jetwash"><img src="images/10930088_1473987549488640_6418508420545933970_n.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+      <div class="gallery-item" data-cat="jetwash"><img src="images/11119141_1473987579488637_3854325506942707730_n.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+      <div class="gallery-item" data-cat="jetwash"><img src="images/20713_1473987506155311_2304005041226339757_n.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+      <div class="gallery-item" data-cat="jetwash"><img src="images/11138651_1473987529488642_4857579786709230194_n.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+      <div class="gallery-item" data-cat="jetwash"><img src="images/41.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+      <div class="gallery-item" data-cat="jetwash"><img src="images/40.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+      <div class="gallery-item" data-cat="jetwash"><img src="images/39.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+      <div class="gallery-item" data-cat="jetwash"><img src="images/38.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+      <div class="gallery-item" data-cat="jetwash"><img src="images/16.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+      <div class="gallery-item" data-cat="jetwash"><img src="images/15.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+      <div class="gallery-item" data-cat="jetwash"><img src="images/12410521_1565600323660695_4459598405609208092_n.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+      <div class="gallery-item" data-cat="jetwash"><img src="images/12509713_1565600340327360_5739358351316876430_n.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+      <div class="gallery-item" data-cat="jetwash"><img src="images/IMG_0635.000-225x300.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+      <div class="gallery-item" data-cat="jetwash"><img src="images/IMG_0636-2-225x300.jpg" alt="Jet Washing"><div class="gallery-label">Jet Washing</div></div>
+
+      <!-- CLEARANCE -->
+      <div class="gallery-item" data-cat="clearance"><img src="images/30.jpg" alt="Overgrown Grass Waterlooville"><div class="gallery-label">Overgrown Grass &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="clearance"><img src="images/29.jpg" alt="Overgrown Grass Waterlooville"><div class="gallery-label">Overgrown Grass &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="clearance"><img src="images/934097_1565601873660540_4616530540734065919_n.jpg" alt="Bowling Club Clearance Purbrook"><div class="gallery-label">Bowling Club Clearance &middot; Purbrook</div></div>
+      <div class="gallery-item" data-cat="clearance"><img src="images/10653466_1565601783660549_7225726182566801754_n.jpg" alt="Bowling Club Clearance Purbrook"><div class="gallery-label">Bowling Club Clearance &middot; Purbrook</div></div>
+      <div class="gallery-item" data-cat="clearance"><img src="images/11148496_1479589398928455_3037023239406205891_n.jpg" alt="Lawn Tidy-Up Waterlooville"><div class="gallery-label">Lawn Tidy-Up &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="clearance"><img src="images/11149119_1479589415595120_3533832529769223750_n.jpg" alt="Lawn Tidy-Up Waterlooville"><div class="gallery-label">Lawn Tidy-Up &middot; Waterlooville</div></div>
+      <div class="gallery-item" data-cat="clearance"><img src="images/11150330_1476594999227895_1655401532677390835_n-1.jpg" alt="Side Clearance Havant"><div class="gallery-label">Side Clearance &middot; Havant</div></div>
+      <div class="gallery-item" data-cat="clearance"><img src="images/11156410_1476595042561224_2754248614710349459_n-1.jpg" alt="Side Clearance Havant"><div class="gallery-label">Side Clearance &middot; Havant</div></div>
+      <div class="gallery-item" data-cat="clearance"><img src="images/IMG_0705-300x225.jpg" alt="Garden Clearance Cowplain"><div class="gallery-label">Garden Clearance &middot; Cowplain</div></div>
+      <div class="gallery-item" data-cat="clearance"><img src="images/IMG_0706-300x225.jpg" alt="Garden Clearance Cowplain"><div class="gallery-label">Garden Clearance &middot; Cowplain</div></div>
+      <div class="gallery-item" data-cat="clearance"><img src="images/IMG_0869-300x225.jpg" alt="Neglected Garden Havant"><div class="gallery-label">Neglected Garden &middot; Havant</div></div>
+      <div class="gallery-item" data-cat="clearance"><img src="images/IMG_0870-300x262.jpg" alt="Neglected Garden Havant"><div class="gallery-label">Neglected Garden &middot; Havant</div></div>
+      <div class="gallery-item" data-cat="clearance"><img src="images/IMG_0871-300x225.jpg" alt="Neglected Garden Havant"><div class="gallery-label">Neglected Garden &middot; Havant</div></div>
+      <div class="gallery-item" data-cat="clearance"><img src="images/IMG_0872-300x225.jpg" alt="Neglected Garden Havant"><div class="gallery-label">Neglected Garden &middot; Havant</div></div>
+    </div>
   </div>
 </section>
 
@@ -1104,6 +1250,32 @@
     }, 900);
   }
 
+  // Gallery filter
+  document.querySelectorAll('.gallery-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.gallery-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        item.classList.toggle('hidden', filter !== 'all' && item.dataset.cat !== filter);
+      });
+    });
+  });
+
+  // Lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  document.querySelectorAll('.gallery-item').forEach(item => {
+    item.addEventListener('click', () => {
+      lightboxImg.src = item.querySelector('img').src;
+      lightboxImg.alt = item.querySelector('img').alt;
+      lightbox.classList.add('open');
+    });
+  });
+  document.getElementById('lightboxClose').addEventListener('click', () => lightbox.classList.remove('open'));
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') lightbox.classList.remove('open'); });
+
   // Fade in sections on scroll
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -1114,13 +1286,19 @@
     });
   }, { threshold: 0.1 });
 
-  document.querySelectorAll('.service-item, .value-card, .gallery-item, .contact-method').forEach(el => {
+  document.querySelectorAll('.service-item, .value-card, .contact-method').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(20px)';
     el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     observer.observe(el);
   });
 </script>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">&times;</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
 
 </body>
 </html>
