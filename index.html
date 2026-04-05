@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DanD Landscape Services</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1a3a2a;
+    --green-mid: #2d5a3d;
+    --green-fresh: #4a8c5c;
+    --green-light: #7ab890;
+    --cream: #f5f0e8;
+    --warm-white: #faf8f4;
+    --stone: #8a7f6e;
+    --charcoal: #2c2c2c;
+    --accent: #c8a96e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--charcoal);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 2rem;
+    background: rgba(26,58,42,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--cream);
+    letter-spacing: 0.02em;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(245,240,232,0.8);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: var(--green-deep) !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: 2px;
+    font-weight: 500 !important;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: #d4b87a !important; color: var(--green-deep) !important; }
+
+  /* HAMBURGER */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--cream);
+    transition: all 0.3s;
+    border-radius: 1px;
+  }
+
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  /* HERO */
+  .hero {
+    height: 100vh;
+    min-height: 600px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: var(--green-deep);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 70% 50%, rgba(74,140,92,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse at 10% 80%, rgba(45,90,61,0.4) 0%, transparent 50%),
+      linear-gradient(135deg, #0f2419 0%, #1a3a2a 40%, #243f30 100%);
+  }
+
+  /* Organic leaf shapes in background */
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    right: -10%;
+    top: 10%;
+    width: 60%;
+    height: 80%;
+    background: radial-gradient(ellipse, rgba(74,140,92,0.15) 0%, transparent 70%);
+    border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    left: -5%;
+    bottom: -10%;
+    width: 40%;
+    height: 50%;
+    background: radial-gradient(ellipse, rgba(200,169,110,0.08) 0%, transparent 70%);
+    border-radius: 40% 60% 30% 70% / 60% 40% 60% 40%;
+    animation: float 11s ease-in-out infinite reverse;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(2%, -3%) scale(1.05); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 2rem;
+    max-width: 700px;
+    margin-left: max(2rem, 8vw);
+    animation: fadeUp 0.9s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(200,169,110,0.4);
+    padding: 0.35rem 0.9rem;
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.9s ease 0.1s both;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: 1.1;
+    color: var(--cream);
+    margin-bottom: 1.4rem;
+    animation: fadeUp 0.9s ease 0.2s both;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--green-light);
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.75);
+    max-width: 480px;
+    margin-bottom: 2.2rem;
+    font-weight: 300;
+    animation: fadeUp 0.9s ease 0.3s both;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.9s ease 0.4s both;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--green-deep);
+    padding: 0.85rem 2rem;
+    border: none;
+    border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    letter-spacing: 0.03em;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: #d4b87a;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(200,169,110,0.3);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--cream);
+    padding: 0.85rem 2rem;
+    border: 1px solid rgba(245,240,232,0.3);
+    border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    letter-spacing: 0.03em;
+    transition: all 0.2s;
+  }
+
+  .btn-outline:hover {
+    border-color: rgba(245,240,232,0.7);
+    background: rgba(245,240,232,0.05);
+  }
+
+  /* SCROLL INDICATOR */
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(245,240,232,0.4);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  .scroll-hint::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(245,240,232,0.4), transparent);
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* SECTIONS */
+  section { padding: 5rem 2rem; }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--green-fresh);
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    color: var(--green-deep);
+    margin-bottom: 1rem;
+  }
+
+  .section-lead {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--stone);
+    max-width: 560px;
+    font-weight: 300;
+  }
+
+  /* ABOUT */
+  #about {
+    background: var(--warm-white);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    margin-top: 3rem;
+  }
+
+  .about-text p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #4a4a4a;
+    margin-bottom: 1.2rem;
+    font-weight: 300;
+  }
+
+  .about-values {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .value-card {
+    padding: 1.4rem;
+    background: var(--cream);
+    border-left: 3px solid var(--green-fresh);
+  }
+
+  .value-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--green-deep);
+    margin-bottom: 0.4rem;
+  }
+
+  .value-card p {
+    font-size: 0.85rem;
+    color: var(--stone);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .about-visual {
+    position: relative;
+  }
+
+  .about-visual-box {
+    aspect-ratio: 4/5;
+    background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-visual-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 30% 70%, rgba(122,184,144,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at 70% 20%, rgba(200,169,110,0.15) 0%, transparent 50%);
+  }
+
+  .leaf-icon {
+    font-size: 6rem;
+    opacity: 0.3;
+  }
+
+  .about-stat {
+    position: absolute;
+    bottom: -1.5rem;
+    right: -1.5rem;
+    background: var(--accent);
+    padding: 1.5rem 2rem;
+    border-radius: 4px;
+  }
+
+  .about-stat .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--green-deep);
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  .about-stat .lbl {
+    font-size: 0.78rem;
+    color: var(--green-deep);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  /* SERVICES */
+  #services {
+    background: var(--cream);
+  }
+
+  .services-header {
+    margin-bottom: 3rem;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: rgba(26,58,42,0.1);
+    border: 1.5px solid rgba(26,58,42,0.1);
+  }
+
+  .service-item {
+    background: var(--warm-white);
+    padding: 2.2rem 1.8rem;
+    transition: background 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 3px;
+    background: var(--green-fresh);
+    transition: width 0.3s ease;
+  }
+
+  .service-item:hover { background: #f0ece3; }
+  .service-item:hover::after { width: 100%; }
+
+  .service-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .service-item h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--green-deep);
+    margin-bottom: 0.6rem;
+  }
+
+  .service-item p {
+    font-size: 0.88rem;
+    color: var(--stone);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* GALLERY */
+  #gallery {
+    background: var(--green-deep);
+  }
+
+  #gallery .section-title { color: var(--cream); }
+  #gallery .section-label { color: var(--green-light); }
+  #gallery .section-lead { color: rgba(245,240,232,0.6); }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 220px);
+    gap: 8px;
+    margin-top: 3rem;
+  }
+
+  .gallery-item {
+    background: var(--green-mid);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .gallery-item:first-child {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+  }
+
+  .gallery-item:hover { transform: scale(1.01); }
+
+  .gallery-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
+    color: rgba(122,184,144,0.5);
+    font-size: 2rem;
+  }
+
+  .gallery-placeholder span {
+    font-size: 0.7rem;
+    color: rgba(122,184,144,0.4);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .gallery-label {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 0.8rem 1rem;
+    background: linear-gradient(to top, rgba(15,36,25,0.9), transparent);
+    color: var(--cream);
+    font-size: 0.82rem;
+    font-weight: 400;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .gallery-item:hover .gallery-label { transform: translateY(0); }
+
+  .gallery-cta {
+    text-align: center;
+    margin-top: 2.5rem;
+    color: rgba(245,240,232,0.6);
+    font-size: 0.9rem;
+  }
+
+  /* CONTACT */
+  #contact {
+    background: var(--warm-white);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+    margin-top: 3rem;
+    align-items: start;
+  }
+
+  .contact-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--green-deep);
+    margin-bottom: 0.8rem;
+  }
+
+  .contact-info > p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--stone);
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  .contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .contact-method {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .contact-method-icon {
+    width: 44px; height: 44px;
+    background: var(--cream);
+    border: 1px solid rgba(26,58,42,0.12);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .contact-method-text .label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+
+  .contact-method-text .value {
+    font-size: 0.95rem;
+    color: var(--green-deep);
+    font-weight: 400;
+  }
+
+  .contact-method-text a {
+    color: var(--green-fresh);
+    text-decoration: none;
+  }
+
+  .contact-method-text a:hover { text-decoration: underline; }
+
+  /* FORM */
+  .contact-form {
+    background: var(--cream);
+    padding: 2.5rem;
+    border-radius: 4px;
+  }
+
+  .contact-form h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--green-deep);
+    margin-bottom: 1.5rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--stone);
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 0.75rem 1rem;
+    background: var(--warm-white);
+    border: 1px solid rgba(26,58,42,0.15);
+    border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    color: var(--charcoal);
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--green-fresh);
+    box-shadow: 0 0 0 3px rgba(74,140,92,0.1);
+  }
+
+  .form-group textarea { min-height: 110px; resize: vertical; }
+
+  .form-submit {
+    width: 100%;
+    padding: 0.9rem;
+    background: var(--green-deep);
+    color: var(--cream);
+    border: none;
+    border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: background 0.2s;
+  }
+
+  .form-submit:hover { background: var(--green-mid); }
+
+  .form-note {
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--stone);
+    margin-top: 0.8rem;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--green-deep);
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--cream);
+  }
+
+  .footer-logo span { color: var(--accent); }
+
+  footer p {
+    font-size: 0.82rem;
+    color: rgba(245,240,232,0.45);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  .footer-links a {
+    color: rgba(245,240,232,0.5);
+    text-decoration: none;
+    font-size: 0.82rem;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.2rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 62px; left: 0; right: 0;
+      background: var(--green-deep);
+      padding: 1.5rem;
+      gap: 1.2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .hero-content { margin-left: 0; }
+
+    .about-grid,
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .about-visual { display: none; }
+    .about-values { grid-template-columns: 1fr; }
+
+    .services-grid { grid-template-columns: 1fr 1fr; }
+
+    .gallery-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+    }
+
+    .gallery-item:first-child {
+      grid-column: 1 / 3;
+      grid-row: auto;
+      height: 180px;
+    }
+
+    .gallery-item { height: 140px; }
+
+    .form-row { grid-template-columns: 1fr; }
+
+    .footer-inner { flex-direction: column; text-align: center; }
+
+    section { padding: 3.5rem 1.2rem; }
+  }
+
+  @media (max-width: 480px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    .gallery-item:first-child { grid-column: auto; }
+  }
+
+  /* FORM SUCCESS */
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+    color: var(--green-fresh);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-logo">Dan<span>D</span> Landscape Services</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact" class="nav-cta">Free Quote</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Local Landscaping Services</div>
+    <h1>Your garden,<br><em>beautifully</em> cared for.</h1>
+    <p>Friendly, hardworking, and fully committed to giving you the garden you deserve — from a quick tidy-up to a complete transformation.</p>
+    <div class="hero-buttons">
+      <a href="#contact" class="btn-primary">Get a Free Quote</a>
+      <a href="#services" class="btn-outline">Our Services</a>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">Who We Are</div>
+    <h2 class="section-title">A local landscaper<br>you can count on</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>We're a local landscaping service covering the surrounding area — friendly, reliable, and genuinely passionate about making outdoor spaces look their best.</p>
+        <p>Whether you need a one-off tidy-up or want to completely transform your garden, we bring the same care and attention to every job, big or small.</p>
+        <p>For a free, no-obligation quote, just get in touch by phone, text, or email. We're always happy to come and take a look.</p>
+        <div class="about-values">
+          <div class="value-card">
+            <h4>Friendly</h4>
+            <p>We're approachable and easy to deal with — no jargon, no fuss.</p>
+          </div>
+          <div class="value-card">
+            <h4>Reliable</h4>
+            <p>We show up when we say we will and see every job through properly.</p>
+          </div>
+          <div class="value-card">
+            <h4>Hardworking</h4>
+            <p>We put in the graft to deliver results you'll be proud to show off.</p>
+          </div>
+          <div class="value-card">
+            <h4>Honest</h4>
+            <p>Straightforward pricing, clear communication, no hidden surprises.</p>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-visual-box">
+          <div class="leaf-icon">🌿</div>
+        </div>
+        <div class="about-stat">
+          <div class="num">10+</div>
+          <div class="lbl">Years Experience</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <div class="services-header">
+      <div class="section-label">What We Do</div>
+      <h2 class="section-title">Everything your<br>garden needs</h2>
+      <p class="section-lead">From weekly lawn maintenance to full garden clearances and patio installations — we cover it all.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-item">
+        <span class="service-icon">✂️</span>
+        <h3>Lawn Mowing</h3>
+        <p>Regular or one-off cuts to keep your lawn looking sharp and healthy all year round.</p>
+      </div>
+      <div class="service-item">
+        <span class="service-icon">🌳</span>
+        <h3>Hedge Trimming</h3>
+        <p>Neat, precise hedging that keeps boundaries tidy and lets your garden breathe.</p>
+      </div>
+      <div class="service-item">
+        <span class="service-icon">🍂</span>
+        <h3>Garden Clearances</h3>
+        <p>Full clearances of overgrown or neglected gardens — we remove everything and leave it clean.</p>
+      </div>
+      <div class="service-item">
+        <span class="service-icon">🌿</span>
+        <h3>Weeding</h3>
+        <p>Thorough weeding of beds, borders and patios to stop unwanted growth taking over.</p>
+      </div>
+      <div class="service-item">
+        <span class="service-icon">💧</span>
+        <h3>Jet Washing</h3>
+        <p>Driveways, paths and patios blasted clean and looking like new again.</p>
+      </div>
+      <div class="service-item">
+        <span class="service-icon">🧱</span>
+        <h3>Patio Installation</h3>
+        <p>New patios and hard landscaping installed to a high standard — and built to last.</p>
+      </div>
+      <div class="service-item">
+        <span class="service-icon">🪵</span>
+        <h3>Fencing</h3>
+        <p>Closeboard, panel, and trellis fencing installed with concrete posts and gravel boards.</p>
+      </div>
+      <div class="service-item">
+        <span class="service-icon">🏡</span>
+        <h3>General Tidy-Up</h3>
+        <p>A thorough overall tidy to get your garden looking presentable and cared for.</p>
+      </div>
+      <div class="service-item">
+        <span class="service-icon">➕</span>
+        <h3>And Much More</h3>
+        <p>Not sure if we cover it? Just ask — if it's garden-related, we'll do our best to help.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-inner">
+    <div class="section-label">Before &amp; After</div>
+    <h2 class="section-title">See the difference</h2>
+    <p class="section-lead">From overgrown and neglected to clean and transformed — here's some of our recent work.</p>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <div class="gallery-placeholder">🌿<span>Fencing — Horndean</span></div>
+        <div class="gallery-label">4ft closeboard with concrete gravel boards</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">🧱<span>Fencing — Waterlooville</span></div>
+        <div class="gallery-label">Bristol fence with trellis and wooden posts</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">🏡<span>Driveway Extension</span></div>
+        <div class="gallery-label">Soil removal, old wall clearance, 20mm shingle</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">✂️<span>Garden Clearance</span></div>
+        <div class="gallery-label">Full clearance and tidy-up</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">💧<span>Patio Jet Wash</span></div>
+        <div class="gallery-label">Before and after pressure washing</div>
+      </div>
+    </div>
+    <p class="gallery-cta">Add your own photos by replacing the placeholder tiles above.</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Ready for a<br>better garden?</h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>We'd love to hear from you</h3>
+        <p>Whether you'd like a free quote or just want to ask a question, get in touch by any of the methods below. We'll always get back to you promptly.</p>
+        <div class="contact-methods">
+          <div class="contact-method">
+            <div class="contact-method-icon">📞</div>
+            <div class="contact-method-text">
+              <div class="label">Call or Text</div>
+              <div class="value"><a href="tel:07823556757">07823 556 757</a></div>
+            </div>
+          </div>
+          <div class="contact-method">
+            <div class="contact-method-icon">✉️</div>
+            <div class="contact-method-text">
+              <div class="label">Email</div>
+              <div class="value"><a href="mailto:dan@dandlandscapeservices.co.uk">dan@dandlandscapeservices.co.uk</a></div>
+            </div>
+          </div>
+          <div class="contact-method">
+            <div class="contact-method-icon">📘</div>
+            <div class="contact-method-text">
+              <div class="label">Facebook</div>
+              <div class="value"><a href="#" target="_blank">DanD Landscape Services</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form">
+        <h3>Send a quick message</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" placeholder="Jane">
+          </div>
+          <div class="form-group">
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" placeholder="Smith">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="07700 000 000">
+        </div>
+        <div class="form-group">
+          <label for="service">Service Required</label>
+          <select id="service">
+            <option value="">Select a service…</option>
+            <option>Lawn Mowing</option>
+            <option>Hedge Trimming</option>
+            <option>Garden Clearance</option>
+            <option>Weeding</option>
+            <option>Jet Washing</option>
+            <option>Patio Installation</option>
+            <option>Fencing</option>
+            <option>General Tidy-Up</option>
+            <option>Other / Not Sure</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Tell Us More</label>
+          <textarea id="message" placeholder="A bit of detail about what you're looking for…"></textarea>
+        </div>
+        <button class="form-submit" onclick="submitForm()">Send Message →</button>
+        <p class="form-note">We aim to reply within 24 hours.</p>
+        <div class="form-success" id="formSuccess">✅ Thanks! We'll be in touch soon.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Dan<span>D</span> Landscape Services</div>
+    <p>© 2025 DanD Landscape Services. All rights reserved.</p>
+    <ul class="footer-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    navLinks.classList.toggle('open');
+  });
+
+  // Close on nav link click
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      navLinks.classList.remove('open');
+    });
+  });
+
+  // Form mock submit
+  function submitForm() {
+    const btn = document.querySelector('.form-submit');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    setTimeout(() => {
+      btn.style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    }, 900);
+  }
+
+  // Fade in sections on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.service-item, .value-card, .gallery-item, .contact-method').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
