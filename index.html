@@ -1383,11 +1383,6 @@
     }
   }, { passive: false });
 
-  // Track scroll position on touch so mobile tap-vs-swipe detection works
-  galleryGrid.addEventListener('touchstart', () => {
-    scrollLeftOnDown = galleryGrid.scrollLeft;
-  }, { passive: true });
-
   // Lightbox
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightboxImg');
@@ -1398,14 +1393,23 @@
     lightbox.classList.add('open');
   }
 
+  let touchStartX = 0, touchStartY = 0;
+  galleryGrid.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
   document.querySelectorAll('.gallery-item').forEach(item => {
-    // Touch: touchend is reliable inside overflow:scroll on iOS; click is not
+    // Touch: measure actual finger movement; if small it's a tap not a swipe
     item.addEventListener('touchend', e => {
-      if (Math.abs(galleryGrid.scrollLeft - scrollLeftOnDown) > 4) return;
-      e.preventDefault(); // stop synthesised click firing too
+      const t = e.changedTouches[0];
+      const dx = t.clientX - touchStartX;
+      const dy = t.clientY - touchStartY;
+      if (Math.sqrt(dx * dx + dy * dy) > 10) return;
+      e.preventDefault();
       openLightbox(item);
     });
-    // Mouse: click works fine on desktop
+    // Mouse (desktop)
     item.addEventListener('click', () => {
       if (wasDrag) return;
       openLightbox(item);
