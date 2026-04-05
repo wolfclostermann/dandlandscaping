@@ -422,27 +422,34 @@
 
   .about-visual-box {
     aspect-ratio: 4/5;
-    background: linear-gradient(135deg, var(--green-mid), var(--green-deep));
     border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     position: relative;
     overflow: hidden;
+    background: var(--green-deep);
   }
 
-  .about-visual-box::before {
-    content: '';
+  .about-visual-box img {
     position: absolute;
     inset: 0;
-    background: 
-      radial-gradient(ellipse at 30% 70%, rgba(122,184,144,0.3) 0%, transparent 60%),
-      radial-gradient(ellipse at 70% 20%, rgba(200,169,110,0.15) 0%, transparent 50%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    animation: photoFade 40s linear infinite;
   }
 
-  .leaf-icon {
-    font-size: 6rem;
-    opacity: 0.3;
+  .about-visual-box img:nth-child(1) { animation-delay:   0s; }
+  .about-visual-box img:nth-child(2) { animation-delay: -35s; }
+  .about-visual-box img:nth-child(3) { animation-delay: -30s; }
+  .about-visual-box img:nth-child(4) { animation-delay: -25s; }
+  .about-visual-box img:nth-child(5) { animation-delay: -20s; }
+  .about-visual-box img:nth-child(6) { animation-delay: -15s; }
+  .about-visual-box img:nth-child(7) { animation-delay: -10s; }
+  .about-visual-box img:nth-child(8) { animation-delay:  -5s; }
+
+  @keyframes photoFade {
+    0%, 10%        { opacity: 1; }
+    12.5%, 100%    { opacity: 0; }
   }
 
   .about-stat {
@@ -986,7 +993,14 @@
       </div>
       <div class="about-visual">
         <div class="about-visual-box">
-          <div class="leaf-icon">🌿</div>
+          <img src="images/11.jpg" alt="Complete garden overhaul Portsmouth">
+          <img src="images/22.jpg" alt="Turfing Waterlooville">
+          <img src="images/51.jpg" alt="Fencing Horndean">
+          <img src="images/33.jpg" alt="Concrete to astro turf Waterlooville">
+          <img src="images/44.jpg" alt="Large scale turfing Petersfield">
+          <img src="images/10389415_1514959948724733_6731646859921513142_n.jpg" alt="BBQ patio Cowplain">
+          <img src="images/4.jpg" alt="Sloped garden levelling Waterlooville">
+          <img src="images/11880547_1526641147556613_5576956459021808859_n.jpg" alt="Garden overhaul Portsmouth">
         </div>
         <div class="about-stat">
           <div class="num">10+</div>
